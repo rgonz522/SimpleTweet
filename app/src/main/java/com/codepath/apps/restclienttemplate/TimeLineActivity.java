@@ -2,20 +2,22 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.github.scribejava.apis.TwitterApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +34,14 @@ public class TimeLineActivity extends AppCompatActivity
     TwitterClient client;
     RecyclerView rvTweets;
 
+    Toolbar compose_bar;
+    Toolbar navigation_bar;
+    ProgressBar progressbar;            //needs implementation
+
     List<Tweet> tweets;
     TweetsAdapter adapter;
+
+
 
     SwipeRefreshLayout swipeContainer;
     EndlessRecyclerViewScrollListener scrollListener;
@@ -45,6 +53,16 @@ public class TimeLineActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
+
+        navigation_bar = (Toolbar) findViewById(R.id.navigation_bar);
+        compose_bar     = (Toolbar)findViewById(R.id.compose_bar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+
+
+        setSupportActionBar(compose_bar);
+
+
 
 
         client = TwitterApp.getRestClient(this);
@@ -86,7 +104,10 @@ public class TimeLineActivity extends AppCompatActivity
         };
 
         rvTweets.addOnScrollListener(scrollListener);
+
         populateHomeTimeLine();
+       // progressbar.setVisibility(ProgressBar.INVISIBLE);
+
     }
 
     private void loadMoreData()
@@ -148,18 +169,42 @@ public class TimeLineActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
+        navigation_bar.inflateMenu(R.menu.menu_main_bottom);
+
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.twitter_blue)));
+
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+      //  navigation_bar.inflateMenu(R.id.);
         if(item.getItemId() == R.id.compose)
         {
             Toast.makeText(this, "Compose", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
         }
+
+       navigation_bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
+       {
+           @Override
+           public boolean onMenuItemClick(MenuItem item) {
+               if(item.getItemId() == R.id.home)
+               {
+
+                   Log.i(TAG, "onOptionsItemSelected: Item Clicked");
+
+               }
+               return false;
+           }
+       }); //toolbar2 menu items CallBack listener
+
         return super.onOptionsItemSelected(item);
     }
 

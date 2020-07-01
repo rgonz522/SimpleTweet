@@ -24,6 +24,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     Context context;
     List<Tweet> tweets;
 
+
+
     public static final int ROUNDED_RADIUs = 50;
 
     //pass in the context and list of tweets
@@ -104,7 +106,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screen_name);
             tvCreatedat.setText(tweet.createdAt);
-            Glide.with(context).load(tweet.user.profile_img_url).transform(new RoundedCorners(ROUNDED_RADIUs)).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profile_img_url).transform(new RoundedCorners(ROUNDED_RADIUs* 2)).into(ivProfileImage);
 
             if(tweet.img_url != null)
             {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/drawable_selector_home"
+        android:title="home"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/drawable_selector_search"
+        android:title="search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/drawable_selector_notifications"
+        android:title="notifications"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/direct_msgs"
+        android:icon="@drawable/drawable_selector_directmsg"
+        android:title="DirecMessafes"
+        app:showAsAction="always" />
+</menu>

@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +27,7 @@ import okhttp3.Headers;
 
 public class ComposeActivity extends AppCompatActivity {
 
+    String replyScreenName;
     EditText etCompose;
     Button btTweet;
     TextView tvCounter;
@@ -123,5 +126,14 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+
     }
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.twitter_blue)));
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
 }
