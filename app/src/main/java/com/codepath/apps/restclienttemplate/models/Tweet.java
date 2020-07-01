@@ -110,4 +110,9 @@ public class Tweet
 
         return relativeDate;
     }
+
+    public void setBody(String body)
+    {
+        this.body = body;
+    }
 }

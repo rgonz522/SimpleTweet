@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/compose_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/twitter_blue"
+        android:backgroundTint="@color/twitter_blue"
+        android:backgroundTintMode="src_atop"
+        android:elevation="4dp"
+        android:gravity="top"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+</RelativeLayout>

@@ -6,8 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".TimeLineActivity">
 
+    <include
+        layout="@layout/toolbar_above"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/navigation_bar"
+
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
@@ -18,21 +24,15 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleMarginStart="2dp"/>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/compose_bar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="top"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleMarginStart="32dp"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="60dp">
 
 
         <androidx.recyclerview.widget.RecyclerView

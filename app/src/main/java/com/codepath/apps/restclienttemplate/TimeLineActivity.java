@@ -183,7 +183,7 @@ public class TimeLineActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-      //  navigation_bar.inflateMenu(R.id.);
+
         if(item.getItemId() == R.id.compose)
         {
             Toast.makeText(this, "Compose", Toast.LENGTH_LONG).show();
@@ -225,4 +225,6 @@ public class TimeLineActivity extends AppCompatActivity
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }

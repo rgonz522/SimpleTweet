@@ -27,10 +27,11 @@ import okhttp3.Headers;
 
 public class ComposeActivity extends AppCompatActivity {
 
-    String replyScreenName;
+    String replyScreenName = "";
     EditText etCompose;
     Button btTweet;
     TextView tvCounter;
+
 
     TwitterClient client;
 
@@ -43,13 +44,20 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
-        client = TwitterApp.getRestClient(this);
+       if(getIntent().getExtras() != null)
+       {
+           setReplyScreenName(getIntent().getStringExtra("replyScreenName"));
+       }
 
-        etCompose = findViewById(R.id.etCompose);
+       Log.i(TAG, "onCreate: " + replyScreenName);
 
-        btTweet = findViewById(R.id.btTweet);
+       client = TwitterApp.getRestClient(this);
 
-        tvCounter = findViewById(R.id.tvCounter);
+       etCompose = findViewById(R.id.etCompose);
+
+       btTweet = findViewById(R.id.btTweet);
+
+       tvCounter = findViewById(R.id.tvCounter);
 
         //set click listener on button
         //make an API Call to twitter
@@ -58,7 +66,7 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                final String tweetContent = etCompose.getText().toString();
+                final String tweetContent = replyScreenName + etCompose.getText().toString();
 
                 if(tweetContent.isEmpty())
                 {
@@ -80,6 +88,10 @@ public class ComposeActivity extends AppCompatActivity {
                         try {
                             Tweet tweet = Tweet.fromJSONObject(json.jsonObject);
                             Log.i(TAG, "Published tweet says" + tweet);
+
+                            Log.i(TAG, "onSuccess:  reply" + tweet.body) ;
+
+
                             Intent intent = new Intent();
                             intent.putExtra("tweet", Parcels.wrap(tweet));
                             setResult(RESULT_OK, intent);
@@ -127,7 +139,13 @@ public class ComposeActivity extends AppCompatActivity {
         });
 
 
+
     }
+    public void setReplyScreenName(String screenname)
+    {
+        replyScreenName = "@" + screenname + " " ;
+    }
+
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.twitter_blue)));
