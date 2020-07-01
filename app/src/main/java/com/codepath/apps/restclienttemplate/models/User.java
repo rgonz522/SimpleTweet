@@ -28,7 +28,7 @@ public class User
     public static User fromJSONOBJECT(JSONObject json) throws JSONException {
         User user = new User();
 
-        user.id = json.getLong("id");
+       user.id = json.getLong("id");
         user.name = json.getString("name");
         user.screen_name = json.getString("screen_name");
         user.profile_img_url = json.getString("profile_image_url_https");

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.w3c.dom.Text;
@@ -22,6 +23,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     Context context;
     List<Tweet> tweets;
+
+    public static final int ROUNDED_RADIUs = 50;
 
     //pass in the context and list of tweets
     public TweetsAdapter(Context context, List<Tweet> tweets)
@@ -77,6 +80,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         ImageView ivProfileImage;
+        ImageView ivTweetPic;
         TextView tvBody;
         TextView tvScreenName;
         TextView tvCreatedat;
@@ -89,6 +93,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvCreatedat = itemView.findViewById(R.id.tvCreatedAt);
+            ivTweetPic = itemView.findViewById(R.id.ivTweetPic);
 
 
 
@@ -99,8 +104,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screen_name);
             tvCreatedat.setText(tweet.createdAt);
-            Glide.with(context).load(tweet.user.profile_img_url).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profile_img_url).transform(new RoundedCorners(ROUNDED_RADIUs)).into(ivProfileImage);
 
+            if(tweet.img_url != null)
+            {
+                Glide.with(context).load(tweet.img_url).transform(new RoundedCorners(ROUNDED_RADIUs)).into(ivTweetPic);
+            }
+            else
+                {
+                    ivTweetPic.setVisibility(View.GONE);
+                }
 
         }
     }
