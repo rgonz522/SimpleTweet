@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ComposeFragment">
+
+
+    <include
+        layout="@layout/toolbar_above"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray" />
+
+    <EditText
+        android:id="@+id/etCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="false"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="0dp"
+        android:ems="10"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="What's happening?"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/btTweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etCompose"
+        android:layout_alignParentEnd="false"
+        android:layout_gravity="end"
+        android:layout_marginTop="500dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/twitter_blue"
+        android:text="Tweet"
+        tools:text="Tweet" />
+
+    <TextView
+        android:id="@+id/tvCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="500dp"
+        android:text="280 Characters Left" />
+
+    <TextView
+        android:id="@+id/tvScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="225dp"
+        android:text="TextView"
+        tools:text="Screename" />
+
+    <TextView
+        android:id="@+id/tvRealName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="200dp"
+        android:text="TextView"
+        tools:text="Real name" />
+
+    <ImageView
+        android:id="@+id/tvProfilePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="65dp"
+        android:cropToPadding="false"
+        tools:src="@tools:sample/avatars" />
+
+
+</FrameLayout>

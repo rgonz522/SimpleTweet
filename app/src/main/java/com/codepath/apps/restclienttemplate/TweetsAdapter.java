@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.app.Activity;
+
+import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
@@ -14,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,9 +24,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
+import java.sql.Time;
 import java.util.List;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>
@@ -125,10 +126,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibreply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Compose", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(context, ComposeActivity.class);
-                    intent.putExtra("replyScreenName", tvScreenName.getText().toString());
-                    ((Activity) context).startActivityForResult(intent, TimeLineActivity.REQUEST_CODE);
+                  showComposeDialog(tvScreenName.getText().toString());
 
                 }
             });
@@ -153,6 +151,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         }
 
+
+    }
+    private void showComposeDialog(String replyScreenName) {
+
+        FragmentManager fm =(new TimeLineActivity()).getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ComposeFragment composeFragment = ComposeFragment.newInstance(replyScreenName, "String 2");
+        Log.i("Composefragment", "showComposeDialog: " + "creating Fragment");
+        composeFragment.show(fm, "fragment_edit_name");
 
     }
 }

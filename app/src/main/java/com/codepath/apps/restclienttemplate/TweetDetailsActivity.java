@@ -2,10 +2,12 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +19,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
+import org.json.JSONException;
 import org.parceler.Parcels;
+
+import okhttp3.Headers;
 
 public class TweetDetailsActivity extends AppCompatActivity {
 
@@ -28,9 +34,13 @@ public class TweetDetailsActivity extends AppCompatActivity {
     TextView tvScreenName;
     TextView tvCreatedat;
     ImageButton ibreply;
+    ImageButton ibfavorite;
 
     Toolbar compose_bar;
 
+    TwitterClient client;
+
+    public static final String TAG = "TweetDetailsActivity";
     public static final int ROUNDED_RADIUs = 50;
 
     @Override
@@ -47,10 +57,13 @@ public class TweetDetailsActivity extends AppCompatActivity {
         ivTweetPic = findViewById(R.id.ivTweetPic);
         ibreply = findViewById(R.id.ibReply);
         compose_bar     = (Toolbar)findViewById(R.id.compose_bar);
+        ibfavorite  = findViewById(R.id.ibFavorite);
 
+        tvScreenName.setText(null);
         setSupportActionBar(compose_bar);
 
-        Tweet tweet = (Tweet)  Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+        client = new TwitterClient(this);
+        final Tweet tweet = (Tweet)  Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
         tvBody.setText(tweet.body);
         tvScreenName.setText(tweet.user.screen_name);
@@ -63,16 +76,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
             ivTweetPic.setVisibility(View.GONE);
         }
 
-        ibreply.setOnClickListener(new View.OnClickListener() {
+        ibreply.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
-                Toast.makeText(TweetDetailsActivity.this, "Compose", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(TweetDetailsActivity.this, ComposeActivity.class);
-                intent.putExtra("replyScreenName", tvScreenName.getText().toString());
-                (TweetDetailsActivity.this).startActivityForResult(intent, TimeLineActivity.REQUEST_CODE);
+                showComposeDialog(tvScreenName.getText().toString());
 
             }
         });
+
+        ibfavorite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                favoringTweet(tweet.id, false);
+                Log.i("Tweet details", "onClick: " + "liking tweet");
+                Log.i("tweet details", "onClick: " + "twwt id: " + tweet.userId);
+            }
+        });
+
 
     }
     @Override
@@ -94,12 +117,45 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.compose)
         {
-            Toast.makeText(this, "Compose", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, TimeLineActivity.REQUEST_CODE);
+          showComposeDialog("");
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+    private void showComposeDialog(String replyName) {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeFragment composeFragment = ComposeFragment.newInstance(replyName, "String 2");
+        composeFragment.show(fm, "fragment_edit_name");
+    }
+
+
+
+    public void favoringTweet(long tweet_id, boolean liking_or_unliking)
+    {
+
+        client.favoringTweet(liking_or_unliking, tweet_id, new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Headers headers, JSON json)
+        {
+            Log.i(TAG, "onSuccess:  to publish tweet" );
+        try {
+            Tweet tweet = Tweet.fromJSONObject(json.jsonObject);
+            Log.i(TAG, "Published tweet says" + tweet);
+
+            Log.i(TAG, "onSuccess:  reply" + tweet.body) ;
+
+        } catch (JSONException e) {
+        e.printStackTrace();
+        }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable)
+        {
+            Log.d(TAG, "onFailure: to publish tweet ", throwable);
+        }
+        }
+        );
     }
 }

@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -186,9 +187,12 @@ public class TimeLineActivity extends AppCompatActivity
 
         if(item.getItemId() == R.id.compose)
         {
-            Toast.makeText(this, "Compose", Toast.LENGTH_LONG).show();
+           /* Toast.makeText(this, "Compose", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
+            */
+
+           showComposeDialog();
         }
 
        navigation_bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
@@ -225,6 +229,11 @@ public class TimeLineActivity extends AppCompatActivity
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    private void showComposeDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeFragment composeFragment = ComposeFragment.newInstance("Some Title", "String 2");
+        composeFragment.show(fm, "fragment_edit_name");
 
+    }
 
 }

@@ -7,6 +7,28 @@
     tools:context=".TweetDetailsActivity">
 
 
+    <ImageButton
+        android:id="@+id/ibFavorite"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivTweetPic"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/ibReply"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_vector_heart_stroke" />
+
+    <ImageButton
+        android:id="@+id/ibRetweet"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivTweetPic"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/ibFavorite"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
     <include
         layout="@layout/toolbar_above"
         android:layout_width="match_parent"
@@ -65,7 +87,8 @@
         android:fontFamily="serif"
         android:textColor="#000000"
         android:textSize="16sp"
-        tools:text="This is my tweet. Lorep Ipsum" />
+        tools:text="This is my tweet. Lorep Ipsum"
+        android:autoLink="all"/>
 
     <TextView
         android:id="@+id/tvCreatedAt"
@@ -85,5 +108,6 @@
         android:layout_alignStart="@+id/tvBody"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        app:srcCompat="@drawable/vector_compose_dm_fab" />
+        app:srcCompat="@drawable/vector_compose_dm_fab"
+        android:background="@null"/>
 </RelativeLayout>

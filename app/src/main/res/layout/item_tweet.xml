@@ -32,7 +32,7 @@
     <TextView
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="106dp"
         android:layout_below="@+id/tvScreenName"
         android:layout_marginStart="2dp"
         android:layout_marginTop="5dp"
@@ -40,6 +40,7 @@
         android:fontFamily="serif"
         android:textColor="#000000"
         android:textSize="16sp"
+        android:autoLink="all"
         tools:text="This is my tweet. Lorep Ipsum" />
 
     <TextView
@@ -75,6 +76,18 @@
         android:layout_alignStart="@+id/tvBody"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        app:srcCompat="@drawable/vector_compose_dm_fab" />
+        app:srcCompat="@drawable/vector_compose_dm_fab"
+        android:background="@null"/>
+
+    <ImageButton
+        android:id="@+id/ibFavorite"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivTweetPic"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ibReply"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_vector_heart_stroke" />
 
 </RelativeLayout>
