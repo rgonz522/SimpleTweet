@@ -33,7 +33,7 @@ public class User
 
     public int following;
 
-
+    public String banner_url;
 
     public static User fromJSONOBJECT(JSONObject json) throws JSONException {
         User user = new User();
@@ -43,13 +43,20 @@ public class User
         user.screen_name = json.getString("screen_name");
         user.profile_img_url = json.getString("profile_image_url_https");
         user.followers = json.getInt("followers_count");
-        Log.i("User", "fromJSONOBJECT: + followers" + user.followers);
         user.following = json.getInt("friends_count");
 
 
 
         return user;
     }
+
+
+    public String setBannerUrl(JSONObject jsonObject) throws JSONException
+    {
+         banner_url = jsonObject.getString("profile_banner_url");
+         return banner_url;
+    }
+
 
     public String getName() {
         return name;

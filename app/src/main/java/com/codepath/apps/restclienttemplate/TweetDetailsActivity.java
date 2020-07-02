@@ -167,7 +167,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
     private void showComposeDialog(String replyName) {
         FragmentManager fm = getSupportFragmentManager();
-        ComposeFragment composeFragment = ComposeFragment.newInstance(replyName, "String 2");
+        ComposeFragment composeFragment = ComposeFragment.newInstance(replyName);
         composeFragment.show(fm, "fragment_edit_name");
     }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -23,6 +24,8 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView tvfollowers;
     TextView tvfollowing;
     ImageView ivProfilePic;
+
+    ImageView ivBanner;
 
     final int ROUNDED_RADIUS = 200;
 
@@ -40,7 +43,7 @@ public class UserProfileActivity extends AppCompatActivity {
         tvfollowers =   (TextView) findViewById(R.id.tvFollowers);
         tvfollowing =   (TextView) findViewById(R.id.tvFollowing);
         ivProfilePic =  (ImageView) findViewById(R.id.ivProfileImage);
-
+        ivBanner =      (ImageView) findViewById(R.id.ivBanner);
 
         final User user = (User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()));
         Log.i("userProfile", "onCreate: " + tvscreenname);
@@ -52,6 +55,7 @@ public class UserProfileActivity extends AppCompatActivity {
             tvfollowers.setText(user.followers + " \tfollowers");
             tvfollowing.setText(user.following + " \tfollowing");
             Glide.with(this).load(user.profile_img_url).transform(new RoundedCorners(ROUNDED_RADIUS)).into(ivProfilePic);
+            Glide.with(this).load(user.banner_url).into(ivBanner);
 
         }
 

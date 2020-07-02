@@ -210,7 +210,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         FragmentManager fm = ((TimeLineActivity) context).getSupportFragmentManager();
 
-        ComposeFragment composeFragment = ComposeFragment.newInstance(replyScreenName, "String 2");
+        ComposeFragment composeFragment = ComposeFragment.newInstance(replyScreenName);
         Log.i("Composefragment", "showComposeDialog: " + "creating Fragment");
         composeFragment.show(fm, "fragment_edit_name");
 

@@ -47,7 +47,7 @@ public class Tweet
             tweet.body = json.getString("text");
             tweet.createdAt = getRelativeTimeAgo(json.getString("created_at"));
             tweet.user = User.fromJSONOBJECT(json.getJSONObject("user"));
-
+            tweet.user.banner_url = tweet.user.setBannerUrl(json.getJSONObject("user"));
             tweet.id = json.getLong("id");
             tweet.img_url = getImageUrlFromJson(json , tweet);
             tweet.userId = tweet.user.id;

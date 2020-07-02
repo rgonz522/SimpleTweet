@@ -61,6 +61,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // get data @ position
         User user = users.get(position);
+        Log.i("Hi", "onBindViewHolder: \n "+ user.name);
         holder.bind(user);
     }
 
@@ -136,7 +137,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         FragmentManager fm = ((TimeLineActivity) context).getSupportFragmentManager();
 
-        ComposeFragment composeFragment = ComposeFragment.newInstance(replyScreenName, "String 2");
+        ComposeFragment composeFragment = ComposeFragment.newInstance(replyScreenName);
         Log.i("Composefragment", "showComposeDialog: " + "creating Fragment");
         composeFragment.show(fm, "fragment_edit_name");
 

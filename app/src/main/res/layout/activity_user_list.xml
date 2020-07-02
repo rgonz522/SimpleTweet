@@ -6,14 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".UserListActivity">
 
+    <include
+        android:id="@+id/tbmain"
+        layout="@layout/toolbar_above"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/tbmain"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp" />
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp" />
 
 </RelativeLayout>

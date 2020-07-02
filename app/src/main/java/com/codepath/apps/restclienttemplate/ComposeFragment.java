@@ -65,15 +65,13 @@ public class ComposeFragment extends DialogFragment {
      * this fragment using the provided parameters.
      *
      * @param replyname Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ComposeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ComposeFragment newInstance(String replyname, String param2) {
+    public static ComposeFragment newInstance(String replyname) {
         ComposeFragment fragment = new ComposeFragment();
         Bundle args = new Bundle();
         args.putString(ARGreplyScreenName, replyname);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,8 +82,6 @@ public class ComposeFragment extends DialogFragment {
         if (getArguments() != null) {
 
             setReplyScreenName(getArguments().getString(ARGreplyScreenName));
-
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
 
@@ -186,16 +182,12 @@ public class ComposeFragment extends DialogFragment {
         });
 
 
-
         return  view;
     }
     public void setReplyScreenName(String screenname)
     {
-        Log.i(TAG, "setReplyScreenName: " + screenname);
         if(screenname.length() > 0 && !screenname.contains("Some Title")) replyScreenName = "@" + screenname + " " ;
-        Log.i(TAG, "setReplyScreenName: " + replyScreenName);
-        Log.i(TAG, "setReplyScreenName: is reply empty" + (replyScreenName == null));
-        Log.i(TAG, "setReplyScreenName: is reply empty" + (replyScreenName.length()));
+
     }
 
 

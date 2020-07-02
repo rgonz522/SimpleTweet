@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -55,15 +56,12 @@ public class TimeLineActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
 
+
         navigation_bar = (Toolbar) findViewById(R.id.navigation_bar);
         compose_bar     = (Toolbar)findViewById(R.id.compose_bar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
-
-
         setSupportActionBar(compose_bar);
-
-
 
 
         client = TwitterApp.getRestClient(this);
@@ -236,7 +234,7 @@ public class TimeLineActivity extends AppCompatActivity
     }
     private void showComposeDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        ComposeFragment composeFragment = ComposeFragment.newInstance("Some Title", "String 2");
+        ComposeFragment composeFragment = ComposeFragment.newInstance("Some Title");
         composeFragment.show(fm, "fragment_edit_name");
 
     }
