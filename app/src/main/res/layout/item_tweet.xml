@@ -80,6 +80,17 @@
         android:background="@null"/>
 
     <ImageButton
+        android:id="@+id/ibRetweet"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivTweetPic"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ibFavorite"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+    <ImageButton
         android:id="@+id/ibFavorite"
         android:layout_width="25dp"
         android:layout_height="25dp"

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 
 import org.parceler.Parcels;
 
@@ -34,6 +35,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     Context context;
     List<Tweet> tweets;
 
+    TweetInteractions interactions;
 
     Layout tweet_layout;
 
@@ -44,6 +46,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     {
         this.context = context;
         this.tweets = tweets;
+        interactions = new TweetInteractions(context);
 
     }
 
@@ -97,6 +100,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvCreatedat;
         ImageButton ibreply;
+        ImageButton ibfavorite;
+        ImageButton ibRetweet;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,11 +113,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvCreatedat = itemView.findViewById(R.id.tvCreatedAt);
             ivTweetPic = itemView.findViewById(R.id.ivTweetPic);
             ibreply = itemView.findViewById(R.id.ibReply);
+            ibfavorite = itemView.findViewById(R.id.ibFavorite);
+            ibRetweet = itemView.findViewById(R.id.ibRetweet);
 
-            itemView.setOnClickListener(this);
         }
 
-        public void bind(Tweet tweet) {
+        public void bind(final Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screen_name);
             tvCreatedat.setText(tweet.createdAt);
@@ -123,6 +130,26 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivTweetPic.setVisibility(View.GONE);
             }
 
+            tvBody.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    int position = getAdapterPosition();
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the movie at the position, this won't work if the class is static
+                        Tweet tweet = tweets.get(position);
+                        // create intent for the new activity
+                        Intent intent = new Intent(context, TweetDetailsActivity.class);
+                        // serialize the movie using parceler, use its short name as a key
+                        intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                        // show the activity
+                        Log.i("Tweet Adapter", "onClick: starting Tweet details");
+                        context.startActivity(intent);
+                    }
+                }
+            });
             ibreply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -130,24 +157,50 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
                 }
             });
+            ibRetweet.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                        interactions.retweetingTweet(tweets.get(getAdapterPosition()).id);
+
+                }
+            });
+            ibfavorite.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                       if(!tweet.liked_by_current_user)
+                       {
+                           interactions.favoringTweet(tweets.get(getAdapterPosition()).id);
+                           tweet.liked_by_current_user = true;
+                       } else
+                           {
+                               interactions.unfavoringTweet(tweets.get(getAdapterPosition()).id);
+                               tweet.liked_by_current_user = false;
+                       }
+
+                }
+            });
+
+
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(tweet.user));
+                    context.startActivity(intent);
+                }
+            };
+            tvScreenName.setOnClickListener(onClickListener);
+            ivProfileImage.setOnClickListener(onClickListener);
 
         }
 
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-            // make sure the position is valid, i.e. actually exists in the view
-            if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
-                Tweet tweet = tweets.get(position);
-                // create intent for the new activity
-                Intent intent = new Intent(context, TweetDetailsActivity.class);
-                // serialize the movie using parceler, use its short name as a key
-                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                // show the activity
-                Log.i("Tweet Adapter", "onClick: starting Tweet details");
-                context.startActivity(intent);
-            }
+
 
         }
 
@@ -155,11 +208,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
     private void showComposeDialog(String replyScreenName) {
 
-        FragmentManager fm =(new TimeLineActivity()).getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        FragmentManager fm = ((TimeLineActivity) context).getSupportFragmentManager();
+
         ComposeFragment composeFragment = ComposeFragment.newInstance(replyScreenName, "String 2");
         Log.i("Composefragment", "showComposeDialog: " + "creating Fragment");
         composeFragment.show(fm, "fragment_edit_name");
 
     }
+
+
+
 }

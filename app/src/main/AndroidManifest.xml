@@ -13,7 +13,9 @@
         android:icon="@drawable/ic_launcher"
         android:label=" "
         android:theme="@style/AppTheme">
-        <activity android:name=".TweetDetailsActivity"></activity>
+        <activity android:name=".UserListActivity"></activity>
+        <activity android:name=".UserProfileActivity" />
+        <activity android:name=".TweetDetailsActivity" />
         <activity android:name=".TimeLineActivity" />
         <activity
             android:name=".LoginActivity"

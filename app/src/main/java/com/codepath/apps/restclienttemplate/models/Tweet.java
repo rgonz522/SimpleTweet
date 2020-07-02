@@ -39,6 +39,8 @@ public class Tweet
 
     public String img_url;
 
+    public boolean liked_by_current_user;
+
     public static Tweet fromJSONObject(JSONObject json) throws JSONException {
         Tweet tweet = new Tweet();
 
@@ -48,9 +50,12 @@ public class Tweet
 
             tweet.id = json.getLong("id");
             tweet.img_url = getImageUrlFromJson(json , tweet);
-            Log.i("Tweet", "fromJSONObject: " + tweet.img_url);
             tweet.userId = tweet.user.id;
 
+            if(tweet.liked_by_current_user)
+            {
+
+            }
             return tweet;
     }
 

@@ -3,12 +3,17 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Context;
 import android.util.Log;
 
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.FlickrApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
+
+import org.json.JSONException;
+
+import okhttp3.Headers;
 
 /*
  * 
@@ -35,6 +40,8 @@ public class TwitterClient extends OAuthBaseClient {
 	// See https://developer.chrome.com/multidevice/android/intents
 	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
 
+	public static User Current_User;
+
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
 				REST_URL,
@@ -43,6 +50,7 @@ public class TwitterClient extends OAuthBaseClient {
 				null,  // OAuth2 scope, null for OAuth1
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
+
 	}
 	// CHANGE THIS
 	// DEFINE METHODS for different API endpoints here
@@ -72,43 +80,91 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("max_id", 1);
 		client.get(apiUrl, params, handler);
 	}
-	/*public void getUser(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("/users/lookup.json");
+
+	public void publishRetweet(Long tweetID, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/retweet/"+ tweetID+ ".json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("user_id", 25);
+		params.put("id", tweetID);
 		Log.d("TwitterClient", "getHomeTimeLine: " );
-		params.put("since_id", 1);
+
+		client.post(apiUrl, params,"", handler);
+	}
+	public void favoringTweet( Long tweetID, JsonHttpResponseHandler handler) {
+
+		String apiUrl = getApiUrl("favorites/create.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("id", tweetID);
+		Log.d("TwitterClient", "getHomeTimeLine: " );
+
+		client.post(apiUrl, params,"", handler);
+	}
+	public void unfavoringTweet( Long tweetID, JsonHttpResponseHandler handler) {
+
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("id", tweetID);
+		Log.d("TwitterClient", "getHomeTimeLine: " );
+
+		client.post(apiUrl, params,"", handler);
+	}
+	public void getUser() {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+
+		Log.d("TwitterClient", "getHomeTimeLine: " );
+
+		client.get(apiUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, Headers headers, JSON json)
+			{
+				try {
+					Current_User = User.fromJSONOBJECT(json.jsonObject);
+					Log.i("Twitter", "onSuccess: " +  Current_User.screen_name);
+				} catch (JSONException e)
+				{
+					Log.e("TwitterClient", "failed to get User From JSOn: ",e );
+				}
+			}
+
+			@Override
+			public void onFailure(int statusCode, Headers headers, String response, Throwable throwable)
+			{
+
+			}
+		});
+	}
+
+	public void getListFollowers(long user_id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("followers/list.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("user_id", user_id);
 		client.get(apiUrl, params, handler);
 	}
-*/
-	public void publishRetweet(Long tweetID, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("/statuses/retweet/.json");
+
+	public void getCurrentUserListFollowers( JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("followers/list.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("status", tweetID);
-		Log.d("TwitterClient", "getHomeTimeLine: " );
-		params.put("since_id", 1);
-		client.post(apiUrl, params,"", handler);
+		client.get(apiUrl, params, handler);
 	}
-	public void favoringTweet(boolean unliking, Long tweetID, JsonHttpResponseHandler handler) {
 
-		String like_or_unlike = (unliking ? "destroy" : "create");
-
-		String apiUrl = getApiUrl("favorites/" + like_or_unlike + ".json"+ tweetID);
+	public void getListFollowing(long user_id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("friends/list.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("favorites", tweetID);
-		Log.d("TwitterClient", "getHomeTimeLine: " );
-
-		client.post(apiUrl, params,"", handler);
+		params.put("user_id", user_id);
+		client.get(apiUrl, params, handler);
 	}
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
+	public void getCurrentUserListFollowing( JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("friends/list.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		client.get(apiUrl, params, handler);
+	}
+
 }

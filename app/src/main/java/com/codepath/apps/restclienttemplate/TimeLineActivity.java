@@ -67,6 +67,8 @@ public class TimeLineActivity extends AppCompatActivity
 
 
         client = TwitterApp.getRestClient(this);
+        client.getUser();
+
 
         swipeContainer = findViewById(R.id.swipeContainer);
         swipeContainer.setColorSchemeResources(
@@ -165,6 +167,9 @@ public class TimeLineActivity extends AppCompatActivity
                 Log.e(TAG, "onFailure: " + response, throwable);
             }
         });
+
+
+
     }
 
     @Override

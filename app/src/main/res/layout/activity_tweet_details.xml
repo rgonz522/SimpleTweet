@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ibReply"
         android:background="@null"
-        app:srcCompat="@drawable/ic_vector_heart_stroke" />
+       />
 
     <ImageButton
         android:id="@+id/ibRetweet"
@@ -27,7 +27,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ibFavorite"
         android:background="@null"
-        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+      />
 
     <include
         layout="@layout/toolbar_above"

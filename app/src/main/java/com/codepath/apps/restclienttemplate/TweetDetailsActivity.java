@@ -1,11 +1,13 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONException;
@@ -35,35 +38,44 @@ public class TweetDetailsActivity extends AppCompatActivity {
     TextView tvCreatedat;
     ImageButton ibreply;
     ImageButton ibfavorite;
+    ImageButton ibretweet;
 
     Toolbar compose_bar;
 
     TwitterClient client;
+    TweetInteractions interactions;
 
     public static final String TAG = "TweetDetailsActivity";
     public static final int ROUNDED_RADIUs = 50;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_details);
 
+        interactions = new TweetInteractions(this);
         ivProfileImage = findViewById(R.id.ivProfileImage);
         tvBody = findViewById(R.id.tvBody);
         tvScreenName = findViewById(R.id.tvScreenName);
         tvCreatedat = findViewById(R.id.tvCreatedAt);
         ivTweetPic = findViewById(R.id.ivTweetPic);
         ibreply = findViewById(R.id.ibReply);
-        compose_bar     = (Toolbar)findViewById(R.id.compose_bar);
-        ibfavorite  = findViewById(R.id.ibFavorite);
+        compose_bar = (Toolbar) findViewById(R.id.compose_bar);
+        ibfavorite = findViewById(R.id.ibFavorite);
+
+        ibretweet = findViewById(R.id.ibRetweet);
 
         tvScreenName.setText(null);
         setSupportActionBar(compose_bar);
 
-        client = new TwitterClient(this);
-        final Tweet tweet = (Tweet)  Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+        final Tweet tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+
+
+
+       //
+
+
 
         tvBody.setText(tweet.body);
         tvScreenName.setText(tweet.user.screen_name);
@@ -75,9 +87,20 @@ public class TweetDetailsActivity extends AppCompatActivity {
         } else {
             ivTweetPic.setVisibility(View.GONE);
         }
-
-        ibreply.setOnClickListener(new View.OnClickListener()
+        Log.i(TAG, "onClick: " + tweet.user.screen_name);
+        ivProfileImage.setOnClickListener(new View.OnClickListener()
         {
+            @Override
+            public void onClick(View view)
+            {
+
+                 Intent intent = new Intent(TweetDetailsActivity.this, UserProfileActivity.class);
+                 intent.putExtra(User.class.getSimpleName(), Parcels.wrap(tweet.user));
+                 startActivity(intent);
+            }
+        });
+
+        ibreply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showComposeDialog(tvScreenName.getText().toString());
@@ -85,22 +108,41 @@ public class TweetDetailsActivity extends AppCompatActivity {
             }
         });
 
-        ibfavorite.setOnClickListener(new View.OnClickListener()
+        ibfavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if(!tweet.liked_by_current_user) {
+                   interactions.favoringTweet(tweet.id);
+                   tweet.liked_by_current_user = true;
+
+               } else
+                   {   interactions.unfavoringTweet(tweet.id);
+                       tweet.liked_by_current_user = false;
+
+
+               }
+            }
+        });
+
+        ibretweet.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                favoringTweet(tweet.id, false);
-                Log.i("Tweet details", "onClick: " + "liking tweet");
+                interactions.retweetingTweet(tweet.id);
+
+                Log.i("Tweet details", "onClick: " + "retweeting tweet");
                 Log.i("tweet details", "onClick: " + "twwt id: " + tweet.userId);
+
             }
         });
 
+        updateImageButtonsColor(tweet);
 
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.twitter_blue)));
@@ -115,14 +157,14 @@ public class TweetDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        if(item.getItemId() == R.id.compose)
-        {
-          showComposeDialog("");
+        if (item.getItemId() == R.id.compose) {
+            showComposeDialog("");
         }
 
 
         return super.onOptionsItemSelected(item);
     }
+
     private void showComposeDialog(String replyName) {
         FragmentManager fm = getSupportFragmentManager();
         ComposeFragment composeFragment = ComposeFragment.newInstance(replyName, "String 2");
@@ -130,32 +172,13 @@ public class TweetDetailsActivity extends AppCompatActivity {
     }
 
 
-
-    public void favoringTweet(long tweet_id, boolean liking_or_unliking)
+    public void updateImageButtonsColor(Tweet tweet)
     {
+        if(tweet.liked_by_current_user) {ibfavorite.setImageResource(R.drawable.ic_vector_heart);}
+        else{ibfavorite.setImageResource(R.drawable.ic_vector_heart_stroke);}
 
-        client.favoringTweet(liking_or_unliking, tweet_id, new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Headers headers, JSON json)
-        {
-            Log.i(TAG, "onSuccess:  to publish tweet" );
-        try {
-            Tweet tweet = Tweet.fromJSONObject(json.jsonObject);
-            Log.i(TAG, "Published tweet says" + tweet);
-
-            Log.i(TAG, "onSuccess:  reply" + tweet.body) ;
-
-        } catch (JSONException e) {
-        e.printStackTrace();
-        }
-        }
-
-        @Override
-        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable)
-        {
-            Log.d(TAG, "onFailure: to publish tweet ", throwable);
-        }
-        }
-        );
+        if(tweet.liked_by_current_user) {ibretweet.setImageResource(R.drawable.ic_vector_retweet);}
+        else{ibretweet.setImageResource(R.drawable.ic_vector_retweet_stroke);}
     }
+
 }

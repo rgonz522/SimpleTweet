@@ -1,13 +1,19 @@
 package com.codepath.apps.restclienttemplate.models;
 
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Parcel
 @Entity
@@ -23,6 +29,10 @@ public class User
     @ColumnInfo
     public String profile_img_url;
 
+    public int followers;
+
+    public int following;
+
 
 
     public static User fromJSONOBJECT(JSONObject json) throws JSONException {
@@ -32,6 +42,10 @@ public class User
         user.name = json.getString("name");
         user.screen_name = json.getString("screen_name");
         user.profile_img_url = json.getString("profile_image_url_https");
+        user.followers = json.getInt("followers_count");
+        Log.i("User", "fromJSONOBJECT: + followers" + user.followers);
+        user.following = json.getInt("friends_count");
+
 
 
         return user;
@@ -49,6 +63,14 @@ public class User
         return profile_img_url;
     }
 
+    public static List<User> fromJSONArray(JSONArray jsonArray) throws JSONException {
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++)
+        {
+            users.add(fromJSONOBJECT(jsonArray.getJSONObject(i)));
 
+        }
+        return users;
+    }
 
 }
