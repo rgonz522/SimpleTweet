@@ -196,6 +196,8 @@ public class TimeLineActivity extends AppCompatActivity
             */
 
            showComposeDialog();
+           //populateHomeTimeLine();
+            Log.i(TAG, "onOptionsItemSelected: " + "continued in activitu");
         }
 
        navigation_bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()

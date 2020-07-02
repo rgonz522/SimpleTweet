@@ -81,18 +81,12 @@ public class ComposeFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-            setReplyScreenName(getArguments().getString(ARGreplyScreenName));
+
         }
 
 
 
         client = TwitterApp.getRestClient(getActivity());
-
-
-
-
-
-
 
     }
 
@@ -100,6 +94,7 @@ public class ComposeFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setReplyScreenName(getArguments().getString(ARGreplyScreenName));
 
         View view = inflater.inflate(R.layout.fragment_compose, container, false);
 
