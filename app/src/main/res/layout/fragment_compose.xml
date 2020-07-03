@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="0dp"
     tools:context=".ComposeFragment">
 
 
@@ -36,8 +36,8 @@
         android:layout_below="@id/etCompose"
         android:layout_alignParentEnd="false"
         android:layout_gravity="end"
-        android:layout_marginTop="500dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="Tweet"
         tools:text="Tweet" />
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="400dp"
         android:text="280 Characters Left" />
 
     <TextView
@@ -55,7 +55,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="225dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginEnd="170dp"
         android:text="TextView"
         tools:text="Screename" />
 
@@ -64,16 +65,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="170dp"
         android:text="TextView"
         tools:text="Real name" />
 
     <ImageView
         android:id="@+id/tvProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="end"
         android:layout_marginTop="65dp"
+        android:layout_marginEnd="50dp"
         android:cropToPadding="false"
         tools:src="@tools:sample/avatars" />
 
